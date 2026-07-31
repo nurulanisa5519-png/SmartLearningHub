@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Beri Nilai
+{% endblock %}
+
+{% block content %}
+
+<h2>Beri Nilai</h2>
+
+<hr>
+
+<p>
+
+<strong>Mahasiswa :</strong>
+
+{{ jawaban.mahasiswa.nama }}
+
+</p>
+
+<p>
+
+<strong>Tugas :</strong>
+
+{{ jawaban.tugas.judul }}
+
+</p>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="mb-3">
+
+<label>Nilai</label>
+
+<input
+type="number"
+name="nilai"
+class="form-control"
+min="0"
+max="100"
+required>
+
+</div>
+
+<button class="btn btn-success">
+
+Simpan Nilai
+
+</button>
+
+<a
+href="{% url 'daftar_jawaban' jawaban.tugas.course.id %}"
+class="btn btn-secondary">
+
+Kembali
+
+</a>
+
+</form>
+
+{% endblock %}

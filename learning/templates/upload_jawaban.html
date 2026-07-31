@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Upload Jawaban
+{% endblock %}
+
+{% block content %}
+
+<h2>Upload Jawaban</h2>
+
+<p><strong>Tugas :</strong> {{ tugas.judul }}</p>
+
+<p><strong>Deadline :</strong> {{ tugas.deadline }}</p>
+
+<hr>
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="mb-3">
+
+        <label>File Jawaban</label>
+
+        <input
+            type="file"
+            name="file_jawaban"
+            class="form-control"
+            required>
+
+    </div>
+
+    <button class="btn btn-primary">
+
+        Upload Jawaban
+
+    </button>
+
+    <a
+        href="{% url 'detail_course' tugas.course.id %}"
+        class="btn btn-secondary">
+
+        Kembali
+
+    </a>
+
+</form>
+
+{% endblock %}

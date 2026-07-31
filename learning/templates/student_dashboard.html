@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard Mahasiswa
+{% endblock %}
+
+{% block content %}
+
+<h2>Dashboard Mahasiswa</h2>
+
+<p>
+    Selamat datang,
+    <strong>{{ mahasiswa.nama }}</strong>
+</p>
+
+<hr>
+
+<h3>Course yang Diikuti</h3>
+
+{% if courses %}
+
+<div class="row">
+
+{% for course in courses %}
+
+<div class="col-md-4 mb-4">
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <h5>
+
+                {{ course.mata_kuliah.nama }}
+
+            </h5>
+
+            <p>
+
+                <strong>Kelas :</strong>
+
+                {{ course.kelas.nama }}
+
+                <br>
+
+                <strong>Semester :</strong>
+
+                {{ course.semester.nama }}
+
+                <br>
+
+                <strong>Dosen :</strong>
+
+                {{ course.dosen.nama }}
+
+            </p>
+
+            <a
+            href="{% url 'detail_course' course.id %}"
+            class="btn btn-primary w-100">
+
+                Masuk Course
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="alert alert-warning">
+
+Belum ada course yang diikuti.
+
+</div>
+
+{% endif %}
+
+{% endblock %}

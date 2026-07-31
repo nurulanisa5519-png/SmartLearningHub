@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{% if edit %}
+Edit Tugas
+{% else %}
+Tambah Tugas
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<h2>
+    {% if edit %}
+    Edit Tugas
+    {% else %}
+    Tambah Tugas
+    {% endif %}
+</h2>
+
+<p>
+    <strong>Course :</strong>
+    {{ course.mata_kuliah.nama }}
+</p>
+
+<hr>
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label>Judul Tugas</label>
+
+        <input
+            type="text"
+            name="judul"
+            class="form-control"
+            value="{% if edit %}{{ tugas.judul }}{% endif %}"
+            required>
+    </div>
+
+    <div class="mb-3">
+        <label>Deskripsi</label>
+
+        <textarea
+            name="deskripsi"
+            class="form-control"
+            rows="5"
+            required>{% if edit %}{{ tugas.deskripsi }}{% endif %}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Deadline</label>
+
+        <input
+            type="datetime-local"
+            name="deadline"
+            class="form-control"
+            value="{% if edit %}{{ tugas.deadline|date:'Y-m-d\\TH:i' }}{% endif %}"
+            required>
+    </div>
+
+    <div class="mb-3">
+        <label>File Tugas</label>
+
+        <input
+            type="file"
+            name="file_tugas"
+            class="form-control">
+
+        {% if edit and tugas.file_tugas %}
+        <small>
+            File saat ini :
+            <a href="{{ tugas.file_tugas.url }}" target="_blank">
+                {{ tugas.file_tugas.name }}
+            </a>
+        </small>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-success">
+
+        {% if edit %}
+        Simpan Perubahan
+        {% else %}
+        Tambah Tugas
+        {% endif %}
+
+    </button>
+
+    <a
+        href="{% url 'detail_course' course.id %}"
+        class="btn btn-secondary">
+        Kembali
+    </a>
+
+</form>
+
+{% endblock %}

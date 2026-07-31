@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard Dosen
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-12">
+
+        <h2>Dashboard Dosen</h2>
+
+        <p class="text-muted">
+            Selamat datang, <strong>{{ user.username }}</strong>
+        </p>
+
+    </div>
+
+</div>
+
+<hr>
+
+<h4 class="mb-4">
+    Course yang Diampu
+</h4>
+
+<div class="row">
+
+{% if courses %}
+
+    {% for course in courses %}
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    {{ course.mata_kuliah.nama }}
+                </h5>
+
+                <p class="card-text">
+
+                    <strong>Kelas :</strong>
+                    {{ course.kelas.nama }}
+
+                    <br>
+
+                    <strong>Semester :</strong>
+                    {{ course.semester.nama }}
+
+                </p>
+
+                <a
+                    href="{% url 'detail_course' course.id %}"
+                    class="btn btn-primary w-100">
+
+                    Masuk Course
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="col-12">
+
+    <div class="alert alert-warning">
+
+        Belum ada course yang diampu.
+
+    </div>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

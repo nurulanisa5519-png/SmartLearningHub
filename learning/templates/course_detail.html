@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ course.mata_kuliah.nama }}
+{% endblock %}
+
+{% block content %}
+
+<h2>{{ course.mata_kuliah.nama }}</h2>
+
+<p>
+    <strong>Kelas :</strong> {{ course.kelas.nama }}<br>
+    <strong>Semester :</strong> {{ course.semester.nama }}<br>
+    <strong>Dosen :</strong> {{ course.dosen.nama }}
+</p>
+
+<hr>
+
+<h3>📚 Materi</h3>
+
+{% if materi %}
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Judul</th>
+            <th>File</th>
+
+            {% if user.profile.role == "dosen" %}
+            <th>Aksi</th>
+            {% endif %}
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for m in materi %}
+
+        <tr>
+
+            <td>{{ m.judul }}</td>
+
+            <td>
+                <a href="{{ m.file.url }}" target="_blank">
+                    Download
+                </a>
+            </td>
+
+            {% if user.profile.role == "dosen" %}
+
+            <td>
+
+                <a href="{% url 'edit_materi' m.id %}" class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <a href="{% url 'hapus_materi' m.id %}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Yakin ingin menghapus materi ini?')">
+                    Hapus
+                </a>
+
+            </td>
+
+            {% endif %}
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% else %}
+
+<p>Belum ada materi.</p>
+
+{% endif %}
+
+{% if user.profile.role == "dosen" %}
+
+<a href="{% url 'upload_materi' course.id %}" class="btn btn-success">
+    Upload Materi
+</a>
+
+{% endif %}
+
+<hr>
+
+<h3>📝 Tugas</h3>
+
+{% if tugas %}
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Judul</th>
+            <th>Deadline</th>
+
+            {% if user.profile.role == "mahasiswa" %}
+            <th>Nilai</th>
+            {% endif %}
+
+            <th>Aksi</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for t in tugas %}
+
+        <tr>
+
+            <td>{{ t.judul }}</td>
+
+            <td>{{ t.deadline }}</td>
+
+            {% if user.profile.role == "mahasiswa" %}
+
+            <td>
+
+                {% with nilai_ditemukan=False %}
+
+                {% for j in t.pengumpulantugas_set.all %}
+
+                    {% if j.mahasiswa.user == user %}
+
+                        {% if j.nilai %}
+                            {{ j.nilai }}
+                        {% else %}
+                            Belum Dinilai
+                        {% endif %}
+
+                    {% endif %}
+
+                {% empty %}
+
+                    Belum Mengumpulkan
+
+                {% endfor %}
+
+                {% endwith %}
+
+            </td>
+
+            {% endif %}
+
+            <td>
+
+                {% if user.profile.role == "mahasiswa" %}
+
+                <a href="{% url 'upload_jawaban' t.id %}"
+                   class="btn btn-primary btn-sm">
+                    Upload Jawaban
+                </a>
+
+                {% endif %}
+
+                {% if user.profile.role == "dosen" %}
+
+                <a href="{% url 'daftar_jawaban' course.id %}"
+                   class="btn btn-secondary btn-sm">
+                    Lihat Jawaban
+                </a>
+
+                <a href="{% url 'edit_tugas' t.id %}"
+                   class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <a href="{% url 'hapus_tugas' t.id %}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Yakin ingin menghapus tugas ini?')">
+                    Hapus
+                </a>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% else %}
+
+<p>Belum ada tugas.</p>
+
+{% endif %}
+
+{% if user.profile.role == "dosen" %}
+
+<a href="{% url 'tambah_tugas' course.id %}"
+   class="btn btn-success">
+    Tambah Tugas
+</a>
+
+{% endif %}
+
+{% endblock %}

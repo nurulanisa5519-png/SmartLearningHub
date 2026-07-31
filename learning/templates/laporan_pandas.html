@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Laporan Pandas
+{% endblock %}
+
+{% block content %}
+
+<div class="report-container">
+
+    <h2 class="report-title">
+        Laporan Analisis Data Smart Learning Hub
+    </h2>
+
+    <p class="report-description">
+        Halaman ini menampilkan hasil analisis data menggunakan library
+        <strong>Pandas</strong> dari database Smart Learning Hub.
+    </p>
+
+    <!-- Ringkasan -->
+    <div class="summary-grid">
+
+        <div class="summary-card">
+            <h3>Mahasiswa</h3>
+            <h1>{{ total_mahasiswa }}</h1>
+        </div>
+
+        <div class="summary-card">
+            <h3>Dosen</h3>
+            <h1>{{ total_dosen }}</h1>
+        </div>
+
+        <div class="summary-card">
+            <h3>Course</h3>
+            <h1>{{ total_course }}</h1>
+        </div>
+
+        <div class="summary-card">
+            <h3>Materi</h3>
+            <h1>{{ total_materi }}</h1>
+        </div>
+
+        <div class="summary-card">
+            <h3>Tugas</h3>
+            <h1>{{ total_tugas }}</h1>
+        </div>
+
+    </div>
+
+    <!-- Data Mahasiswa -->
+    <div class="report-section">
+
+        <h3>Data Mahasiswa</h3>
+
+        <div class="report-table">
+            {{ mahasiswa|safe }}
+        </div>
+
+    </div>
+
+    <!-- Data Dosen -->
+    <div class="report-section">
+
+        <h3>Data Dosen</h3>
+
+        <div class="report-table">
+            {{ dosen|safe }}
+        </div>
+
+    </div>
+
+    <!-- Data Course -->
+    <div class="report-section">
+
+        <h3>Data Course</h3>
+
+        <div class="report-table">
+            {{ course|safe }}
+        </div>
+
+    </div>
+
+    <!-- Data Materi -->
+    <div class="report-section">
+
+        <h3>Data Materi</h3>
+
+        <div class="report-table">
+            {{ materi|safe }}
+        </div>
+
+    </div>
+
+    <!-- Data Tugas -->
+    <div class="report-section">
+
+        <h3>Data Tugas</h3>
+
+        <div class="report-table">
+            {{ tugas|safe }}
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

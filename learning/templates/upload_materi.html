@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{% if edit %}
+Edit Materi
+{% else %}
+Upload Materi
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+{% if edit %}
+Edit Materi
+{% else %}
+Upload Materi
+{% endif %}
+
+</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="mb-3">
+
+        <label>Judul</label>
+
+        <input
+            type="text"
+            name="judul"
+            class="form-control"
+            value="{% if edit %}{{ materi.judul }}{% endif %}"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Deskripsi</label>
+
+        <textarea
+            name="deskripsi"
+            class="form-control"
+            rows="5"
+            required>{% if edit %}{{ materi.deskripsi }}{% endif %}</textarea>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>File Materi</label>
+
+        <input
+            type="file"
+            name="file"
+            class="form-control">
+
+        {% if edit %}
+
+        <small>
+
+            File saat ini :
+
+            <a href="{{ materi.file.url }}">
+
+                {{ materi.file.name }}
+
+            </a>
+
+        </small>
+
+        {% endif %}
+
+    </div>
+
+    <button type="submit" class="btn btn-success">
+
+        {% if edit %}
+        Simpan Perubahan
+        {% else %}
+        Upload Materi
+        {% endif %}
+
+    </button>
+
+    <a href="{% url 'detail_course' course.id %}" class="btn btn-secondary">
+
+        Kembali
+
+    </a>
+
+</form>
+
+{% endblock %}

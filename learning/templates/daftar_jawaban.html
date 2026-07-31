@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Daftar Jawaban
+{% endblock %}
+
+{% block content %}
+
+<h2>Daftar Jawaban Mahasiswa</h2>
+
+<hr>
+
+<table class="table table-bordered">
+
+    <tr>
+
+        <th>Mahasiswa</th>
+
+        <th>Tugas</th>
+
+        <th>File</th>
+
+        <th>Nilai</th>
+
+        <th>Aksi</th>
+
+    </tr>
+
+    {% for j in jawaban %}
+
+    <tr>
+
+        <td>{{ j.mahasiswa.nama }}</td>
+
+        <td>{{ j.tugas.judul }}</td>
+
+        <td>
+
+            <a href="{{ j.file_jawaban.url }}">
+
+                Download
+
+            </a>
+
+        </td>
+
+        <td>
+
+            {{ j.nilai|default:"Belum Dinilai" }}
+
+        </td>
+
+        <td>
+
+            <a
+                href="{% url 'beri_nilai' j.id %}"
+                class="btn btn-warning btn-sm">
+
+                Beri Nilai
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<a
+href="{% url 'detail_course' course.id %}"
+class="btn btn-secondary">
+
+Kembali
+
+</a>
+
+{% endblock %}

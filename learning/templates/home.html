@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Learning Hub</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="home-container">
+    <div class="home-card">
+        <h1>Selamat Datang di Smart Learning Hub</h1>
+
+        <p>
+            Platform pembelajaran berbasis web yang membantu mahasiswa
+            dan pengajar dalam proses belajar mengajar secara mudah,
+            modern, dan interaktif.
+        </p>
+
+        <p>
+
+            Silakan login menggunakan akun yang telah diberikan oleh administrator.
+
+        </p>
+
+        <div class="home-buttons">
+            <a href="{% url 'login' %}" class="home-btn">
+                Login
+            </a>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
