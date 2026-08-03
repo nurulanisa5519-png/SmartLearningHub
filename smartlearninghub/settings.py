@@ -18,12 +18,19 @@ load_dotenv(BASE_DIR / ".env")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vu7op719g%en2av9-3-y^p-8jf=!6rx$0c-&1%=(f0^av8bmnw'
 
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    "django-insecure-vu7op719g%en2av9-3-y^p-8jf=!6rx$0c-&1%=(f0^av8bmnw"
+)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "smartlearninghub-production.up.railway.app",
+    "127.0.0.1",
+    "localhost",
+]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://web-production-9a1b3c.up.railway.app",
