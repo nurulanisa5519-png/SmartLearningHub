@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv(
     "django-insecure-vu7op719g%en2av9-3-y^p-8jf=!6rx$0c-&1%=(f0^av8bmnw"
 )
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "smartlearninghub-production.up.railway.app",
