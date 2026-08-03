@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .pandas_analysis import statistik_dashboard
+from django.shortcuts import render
+import markdown
 
 from .models import (
     Profile,
@@ -23,6 +25,13 @@ from .serializers import (
     TugasSerializer,
 )
 
+from openai import OpenAI
+from django.conf import settings
+
+client = OpenAI(
+    api_key=settings.OPENROUTER_API_KEY,
+    base_url="https://openrouter.ai/api/v1"
+)
 # =====================================
 # HOME
 # =====================================
@@ -79,21 +88,14 @@ def dashboard(request):
     )
 
     # ================= ADMIN =================
-
     if profile.role == "admin":
 
         context = {
-
             "jumlah_mahasiswa": Mahasiswa.objects.count(),
-
             "jumlah_dosen": Dosen.objects.count(),
-
             "jumlah_course": Course.objects.count(),
-
             "jumlah_materi": Materi.objects.count(),
-
             "jumlah_tugas": Tugas.objects.count(),
-
         }
 
         return render(
@@ -102,10 +104,7 @@ def dashboard(request):
             context
         )
 
-    
-
     # ================= DOSEN =================
-
     elif profile.role == "dosen":
 
         dosen = get_object_or_404(
@@ -127,7 +126,7 @@ def dashboard(request):
         )
 
     # ================= MAHASISWA =================
-
+    # ================= MAHASISWA =================
     elif profile.role == "mahasiswa":
 
         mahasiswa = get_object_or_404(
@@ -139,12 +138,54 @@ def dashboard(request):
             kelas=mahasiswa.kelas
         )
 
+        pertanyaan = ""
+        jawaban = ""
+
+        if request.method == "POST":
+
+            pertanyaan = request.POST.get("pertanyaan")
+
+            if pertanyaan:
+
+                try:
+
+                    response = client.chat.completions.create(
+                        model="openrouter/free",
+                        messages=[
+                            {
+                                "role": "system",
+                                "content": "Kamu adalah Smart Learning AI yang membantu mahasiswa belajar. Jawablah dalam bahasa Indonesia dengan jelas dan mudah dipahami."
+                            },
+                            {
+                                "role": "user",
+                                "content": pertanyaan
+                            }
+                        ]
+                    )
+
+                    print(response)
+
+                    isi = response.choices[0].message.content
+
+                    print("ISI JAWABAN =", isi)
+
+                    jawaban = markdown.markdown(
+                        isi,
+                        extensions=["extra"]
+                    )
+
+                except Exception as e:
+
+                    jawaban = f"Terjadi kesalahan: {e}"
+
         return render(
             request,
             "student_dashboard.html",
             {
+                "mahasiswa": mahasiswa,
                 "courses": courses,
-                "mahasiswa": mahasiswa
+                "pertanyaan": pertanyaan,
+                "jawaban": jawaban,
             }
         )
 
@@ -790,3 +831,5 @@ class MateriViewSet(viewsets.ModelViewSet):
 class TugasViewSet(viewsets.ModelViewSet):
     queryset = Tugas.objects.all()
     serializer_class = TugasSerializer
+
+

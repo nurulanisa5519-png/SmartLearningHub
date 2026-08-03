@@ -21,55 +21,48 @@ Dashboard Mahasiswa
 
 <div class="row">
 
-{% for course in courses %}
+    {% for course in courses %}
 
-<div class="col-md-4 mb-4">
+    <div class="col-md-4 mb-4">
 
-    <div class="card shadow-sm">
+        <div class="card shadow-sm">
 
-        <div class="card-body">
+            <div class="card-body">
 
-            <h5>
+                <h5>{{ course.mata_kuliah.nama }}</h5>
 
-                {{ course.mata_kuliah.nama }}
+                <p>
 
-            </h5>
+                    <strong>Kelas :</strong>
+                    {{ course.kelas.nama }}
 
-            <p>
+                    <br>
 
-                <strong>Kelas :</strong>
+                    <strong>Semester :</strong>
+                    {{ course.semester.nama }}
 
-                {{ course.kelas.nama }}
+                    <br>
 
-                <br>
+                    <strong>Dosen :</strong>
+                    {{ course.dosen.nama }}
 
-                <strong>Semester :</strong>
+                </p>
 
-                {{ course.semester.nama }}
+                <a
+                    href="{% url 'detail_course' course.id %}"
+                    class="btn btn-primary w-100">
 
-                <br>
+                    Masuk Course
 
-                <strong>Dosen :</strong>
+                </a>
 
-                {{ course.dosen.nama }}
-
-            </p>
-
-            <a
-            href="{% url 'detail_course' course.id %}"
-            class="btn btn-primary w-100">
-
-                Masuk Course
-
-            </a>
+            </div>
 
         </div>
 
     </div>
 
-</div>
-
-{% endfor %}
+    {% endfor %}
 
 </div>
 
@@ -77,10 +70,129 @@ Dashboard Mahasiswa
 
 <div class="alert alert-warning">
 
-Belum ada course yang diikuti.
+    Belum ada course yang diikuti.
 
 </div>
 
 {% endif %}
+
+<hr>
+
+<!-- ================= AI ASSISTANT ================= -->
+
+<div class="card shadow-lg">
+
+    <div class="card-header bg-primary text-white">
+
+        <h4>🤖 Smart Learning AI</h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <!-- Area Chat -->
+
+        <div
+            style="
+                height:350px;
+                overflow-y:auto;
+                background:#f8f9fa;
+                border:1px solid #ddd;
+                border-radius:10px;
+                padding:20px;
+                margin-bottom:20px;
+            ">
+
+            {% if pertanyaan %}
+
+            <div style="text-align:right; margin-bottom:20px;">
+
+                <span
+                    style="
+                        background:#0d6efd;
+                        color:white;
+                        padding:10px 15px;
+                        border-radius:15px;
+                        display:inline-block;
+                    ">
+
+                    {{ pertanyaan }}
+
+                </span>
+
+            </div>
+
+            {% endif %}
+
+            {% if jawaban %}
+
+            <div style="margin-bottom:20px;">
+
+                <span
+                    style="
+                        background:#e9ecef;
+                        color:black;
+                        padding:10px 15px;
+                        border-radius:15px;
+                        display:inline-block;
+                    ">
+
+                    {{ jawaban }}
+
+                </span>
+
+            </div>
+
+            {% else %}
+
+            <p style="color:gray;">
+
+                👋 Halo {{ mahasiswa.nama }}.
+
+                <br><br>
+
+                Saya adalah <strong>Smart Learning AI</strong>.
+
+                Silakan bertanya mengenai materi perkuliahan,
+                tugas, ataupun konsep pemrograman.
+
+            </p>
+
+            {% endif %}
+
+        </div>
+
+        <!-- Form Chat -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="input-group">
+
+                <textarea
+                    class="form-control"
+                    name="pertanyaan"
+                    rows="3"
+                    placeholder="Contoh: Jelaskan apa itu Django Framework..."
+                    required>{{ pertanyaan }}</textarea>
+
+            </div>
+
+            <br>
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                🤖 Kirim Pertanyaan
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}
