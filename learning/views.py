@@ -151,7 +151,7 @@ def dashboard(request):
                 try:
 
                     response = client.chat.completions.create(
-                        model="openrouter/free",
+                        model="deepseek/deepseek-r1-0528:free",
                         messages=[
                             {
                                 "role": "system",
