@@ -176,8 +176,13 @@ def dashboard(request):
                     )
 
                 except Exception as e:
+                    import traceback
 
-                    jawaban = f"Terjadi kesalahan: {e}"
+                    traceback.print_exc()
+
+                    print("ERROR =", str(e))
+
+                    jawaban = f"Terjadi kesalahan: {str(e)}"
 
         return render(
             request,
