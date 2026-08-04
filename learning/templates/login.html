@@ -12,7 +12,6 @@
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
@@ -24,15 +23,11 @@
 
     <div class="login-card">
 
-        <!-- Logo -->
-
         <div class="login-logo">
 
             📚
 
         </div>
-
-        <!-- Judul -->
 
         <h2>
 
@@ -45,8 +40,6 @@
             Silakan login untuk melanjutkan.
 
         </p>
-
-        <!-- Form Login -->
 
         <form method="POST">
 
@@ -100,20 +93,9 @@
                         autocomplete="current-password"
                         required>
 
-                    <button
-                        type="button"
-                        class="toggle-password"
-                        onclick="togglePassword()">
-
-                        <i class="fa-solid fa-eye" id="eyeIcon"></i>
-
-                    </button>
-
                 </div>
 
             </div>
-
-            <!-- Tombol Login -->
 
             <button
                 type="submit"
@@ -125,8 +107,6 @@
 
         </form>
 
-        <!-- Error -->
-
         {% if error %}
 
         <div class="error-box">
@@ -136,8 +116,6 @@
         </div>
 
         {% endif %}
-
-        <!-- Footer -->
 
         <div class="login-footer">
 
@@ -152,36 +130,6 @@
     </div>
 
 </div>
-
-<script>
-
-function togglePassword(){
-
-    const password = document.getElementById("password");
-
-    const eyeIcon = document.getElementById("eyeIcon");
-
-    if(password.type === "password"){
-
-        password.type = "text";
-
-        eyeIcon.classList.remove("fa-eye");
-
-        eyeIcon.classList.add("fa-eye-slash");
-
-    }else{
-
-        password.type = "password";
-
-        eyeIcon.classList.remove("fa-eye-slash");
-
-        eyeIcon.classList.add("fa-eye");
-
-    }
-
-}
-
-</script>
 
 </body>
 
