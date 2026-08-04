@@ -3,11 +3,19 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Login | Smart Learning Hub</title>
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
 
 <body class="login-page">
@@ -17,40 +25,92 @@
     <div class="login-card">
 
         <div class="login-logo">
+
             📚
+
         </div>
 
-        <h2>Smart Learning Hub</h2>
+        <h2>
+
+            Smart Learning Hub
+
+        </h2>
 
         <p class="login-subtitle">
+
             Silakan login untuk melanjutkan.
+
         </p>
 
         <form method="POST">
 
             {% csrf_token %}
 
-            <div class="input-group">
-                <label>Username</label>
-
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Masukkan username"
-                    required>
-            </div>
+            <!-- Username -->
 
             <div class="input-group">
-                <label>Password</label>
 
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Masukkan password"
-                    required>
+                <label>
+
+                    Username
+
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Masukkan username"
+                        autocomplete="username"
+                        required>
+
+                </div>
+
             </div>
 
-            <button type="submit" class="login-btn">
+            <!-- Password -->
+
+            <div class="input-group">
+
+                <label>
+
+                    Password
+
+                </label>
+
+                <div class="password-wrapper">
+
+                    <i class="fa-solid fa-lock lock-icon"></i>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Masukkan password"
+                        autocomplete="current-password"
+                        required>
+
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        onclick="togglePassword()">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <button
+                type="submit"
+                class="login-btn">
+
+                <i class="fa-solid fa-right-to-bracket"></i>
 
                 Login
 
@@ -62,6 +122,8 @@
 
         <div class="error-box">
 
+            <i class="fa-solid fa-circle-exclamation"></i>
+
             {{ error }}
 
         </div>
@@ -69,8 +131,8 @@
         {% endif %}
 
         <div class="login-footer">
-            <p> Hubungi administrator apabila belum memiliki akun.</p>
 
+            Hubungi administrator apabila belum memiliki akun.
 
         </div>
 
@@ -78,5 +140,36 @@
 
 </div>
 
+<script>
+
+function togglePassword(){
+
+    const password=document.getElementById("password");
+
+    const icon=document.querySelector(".toggle-password i");
+
+    if(password.type==="password"){
+
+        password.type="text";
+
+        icon.classList.remove("fa-eye");
+
+        icon.classList.add("fa-eye-slash");
+
+    }else{
+
+        password.type="password";
+
+        icon.classList.remove("fa-eye-slash");
+
+        icon.classList.add("fa-eye");
+
+    }
+
+}
+
+</script>
+
 </body>
+
 </html>
