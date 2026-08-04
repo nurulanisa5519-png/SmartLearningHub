@@ -41,11 +41,27 @@
 
             <td>{{ m.judul }}</td>
 
-            <td>
-                <a href="{{ m.file.url }}" target="_blank">
-                    Download
-                </a>
-            </td>
+            <div class="materi-button">
+
+    <a
+        href="{{ materi.file.url }}"
+        target="_blank"
+        class="btn btn-primary">
+
+        👁 Lihat
+
+    </a>
+
+    <a
+        href="{{ materi.file.url }}"
+        download
+        class="btn btn-success">
+
+        ⬇ Download
+
+    </a>
+
+</div>
 
             {% if user.profile.role == "dosen" %}
 
