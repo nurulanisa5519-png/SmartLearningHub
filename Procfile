@@ -1,1 +1,1 @@
-web: gunicorn smartlearninghub.wsgi
+web: gunicorn smartlearninghub.wsgi:application --bind 0.0.0.0:$PORT
