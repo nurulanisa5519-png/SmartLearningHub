@@ -14,6 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load file .env
 load_dotenv(BASE_DIR / ".env")
 
+
 # OpenAI API Key
 load_dotenv()
 
@@ -26,7 +27,7 @@ SECRET_KEY = os.getenv(
     "django-insecure-vu7op719g%en2av9-3-y^p-8jf=!6rx$0c-&1%=(f0^av8bmnw"
 )
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "smartlearninghub-production.up.railway.app",
@@ -123,8 +124,14 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
