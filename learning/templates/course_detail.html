@@ -23,14 +23,17 @@
 <table class="table table-bordered">
 
     <thead>
-        <tr>
-            <th>Judul</th>
-            <th>File</th>
 
-            {% if user.profile.role == "dosen" %}
+        <tr>
+
+            <th>Judul</th>
+
+            <th>Nama File</th>
+
             <th>Aksi</th>
-            {% endif %}
+
         </tr>
+
     </thead>
 
     <tbody>
@@ -39,47 +42,60 @@
 
         <tr>
 
-            <td>{{ m.judul }}</td>
-
-            <div class="materi-button">
-
-    <a
-        href="{{ materi.file.url }}"
-        target="_blank"
-        class="btn btn-primary">
-
-        👁 Lihat
-
-    </a>
-
-    <a
-        href="{{ materi.file.url }}"
-        download
-        class="btn btn-success">
-
-        ⬇ Download
-
-    </a>
-
-</div>
-
-            {% if user.profile.role == "dosen" %}
-
             <td>
 
-                <a href="{% url 'edit_materi' m.id %}" class="btn btn-warning btn-sm">
-                    Edit
-                </a>
-
-                <a href="{% url 'hapus_materi' m.id %}"
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('Yakin ingin menghapus materi ini?')">
-                    Hapus
-                </a>
+                {{ m.judul }}
 
             </td>
 
-            {% endif %}
+            <td>
+
+                {{ m.file.name|cut:"materi/" }}
+
+            </td>
+
+            <td>
+
+                <a
+                    href="{{ m.file.url }}"
+                    target="_blank"
+                    class="btn btn-primary btn-sm">
+
+                    👁 Lihat
+
+                </a>
+
+                <a
+                    href="{{ m.file.url }}"
+                    download="{{ m.file.name }}"
+                    class="btn btn-success btn-sm">
+
+                    ⬇ Download
+
+                </a>
+
+                {% if user.profile.role == "dosen" %}
+
+                    <a
+                        href="{% url 'edit_materi' m.id %}"
+                        class="btn btn-warning btn-sm">
+
+                        ✏ Edit
+
+                    </a>
+
+                    <a
+                        href="{% url 'hapus_materi' m.id %}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Yakin ingin menghapus materi ini?')">
+
+                        🗑 Hapus
+
+                    </a>
+
+                {% endif %}
+
+            </td>
 
         </tr>
 
@@ -98,7 +114,9 @@
 {% if user.profile.role == "dosen" %}
 
 <a href="{% url 'upload_materi' course.id %}" class="btn btn-success">
+
     Upload Materi
+
 </a>
 
 {% endif %}
@@ -116,10 +134,13 @@
         <tr>
 
             <th>Judul</th>
+
             <th>Deadline</th>
 
             {% if user.profile.role == "mahasiswa" %}
+
             <th>Nilai</th>
+
             {% endif %}
 
             <th>Aksi</th>
@@ -136,22 +157,30 @@
 
             <td>{{ t.judul }}</td>
 
-            <td>{{ t.deadline }}</td>
+            <td>
+
+                {{ t.deadline|date:"d M Y H:i" }}
+
+            </td>
 
             {% if user.profile.role == "mahasiswa" %}
 
             <td>
 
-                {% with nilai_ditemukan=False %}
+                {% with ditemukan=False %}
 
                 {% for j in t.pengumpulantugas_set.all %}
 
                     {% if j.mahasiswa.user == user %}
 
                         {% if j.nilai %}
+
                             {{ j.nilai }}
+
                         {% else %}
+
                             Belum Dinilai
+
                         {% endif %}
 
                     {% endif %}
@@ -172,30 +201,42 @@
 
                 {% if user.profile.role == "mahasiswa" %}
 
-                <a href="{% url 'upload_jawaban' t.id %}"
-                   class="btn btn-primary btn-sm">
-                    Upload Jawaban
-                </a>
+                    <a
+                        href="{% url 'upload_jawaban' t.id %}"
+                        class="btn btn-primary btn-sm">
+
+                        📤 Upload Jawaban
+
+                    </a>
 
                 {% endif %}
 
                 {% if user.profile.role == "dosen" %}
 
-                <a href="{% url 'daftar_jawaban' course.id %}"
-                   class="btn btn-secondary btn-sm">
-                    Lihat Jawaban
-                </a>
+                    <a
+                        href="{% url 'daftar_jawaban' course.id %}"
+                        class="btn btn-info btn-sm">
 
-                <a href="{% url 'edit_tugas' t.id %}"
-                   class="btn btn-warning btn-sm">
-                    Edit
-                </a>
+                        📄 Jawaban
 
-                <a href="{% url 'hapus_tugas' t.id %}"
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('Yakin ingin menghapus tugas ini?')">
-                    Hapus
-                </a>
+                    </a>
+
+                    <a
+                        href="{% url 'edit_tugas' t.id %}"
+                        class="btn btn-warning btn-sm">
+
+                        ✏ Edit
+
+                    </a>
+
+                    <a
+                        href="{% url 'hapus_tugas' t.id %}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Yakin ingin menghapus tugas ini?')">
+
+                        🗑 Hapus
+
+                    </a>
 
                 {% endif %}
 
@@ -217,9 +258,12 @@
 
 {% if user.profile.role == "dosen" %}
 
-<a href="{% url 'tambah_tugas' course.id %}"
-   class="btn btn-success">
+<a
+    href="{% url 'tambah_tugas' course.id %}"
+    class="btn btn-success">
+
     Tambah Tugas
+
 </a>
 
 {% endif %}
