@@ -23,17 +23,11 @@
 <table class="table table-bordered">
 
     <thead>
-
         <tr>
-
-            <th>Judul</th>
-
+            <th>Judul Materi</th>
             <th>Nama File</th>
-
             <th>Aksi</th>
-
         </tr>
-
     </thead>
 
     <tbody>
@@ -43,31 +37,24 @@
         <tr>
 
             <td>
-
                 {{ m.judul }}
-
             </td>
 
             <td>
 
-                {{ m.file.name|cut:"materi/" }}
+                <a href="{{ m.file.url }}" download>
 
-            </td>
-
-            <td>
-
-                <a
-                    href="{{ m.file.url }}"
-                    target="_blank"
-                    class="btn btn-primary btn-sm">
-
-                    👁 Lihat
+                    📄 {{ m.file.name|cut:"materi/" }}
 
                 </a>
 
+            </td>
+
+            <td>
+
                 <a
                     href="{{ m.file.url }}"
-                    download="{{ m.file.name }}"
+                    download
                     class="btn btn-success btn-sm">
 
                     ⬇ Download
@@ -99,6 +86,18 @@
 
         </tr>
 
+    {% empty %}
+
+        <tr>
+
+            <td colspan="3">
+
+                Belum ada materi.
+
+            </td>
+
+        </tr>
+
     {% endfor %}
 
     </tbody>
@@ -113,11 +112,15 @@
 
 {% if user.profile.role == "dosen" %}
 
-<a href="{% url 'upload_materi' course.id %}" class="btn btn-success">
+<p style="margin-top:15px;">
 
-    Upload Materi
+    <a href="{% url 'upload_materi' course.id %}" class="btn btn-success">
 
-</a>
+        ➕ Upload Materi
+
+    </a>
+
+</p>
 
 {% endif %}
 
@@ -133,14 +136,12 @@
 
         <tr>
 
-            <th>Judul</th>
+            <th>Judul Tugas</th>
 
             <th>Deadline</th>
 
             {% if user.profile.role == "mahasiswa" %}
-
             <th>Nilai</th>
-
             {% endif %}
 
             <th>Aksi</th>
@@ -155,7 +156,11 @@
 
         <tr>
 
-            <td>{{ t.judul }}</td>
+            <td>
+
+                {{ t.judul }}
+
+            </td>
 
             <td>
 
@@ -167,15 +172,13 @@
 
             <td>
 
-                {% with ditemukan=False %}
-
                 {% for j in t.pengumpulantugas_set.all %}
 
                     {% if j.mahasiswa.user == user %}
 
                         {% if j.nilai %}
 
-                            {{ j.nilai }}
+                            <strong>{{ j.nilai }}</strong>
 
                         {% else %}
 
@@ -190,8 +193,6 @@
                     Belum Mengumpulkan
 
                 {% endfor %}
-
-                {% endwith %}
 
             </td>
 
@@ -244,6 +245,18 @@
 
         </tr>
 
+    {% empty %}
+
+        <tr>
+
+            <td colspan="{% if user.profile.role == 'mahasiswa' %}4{% else %}3{% endif %}">
+
+                Belum ada tugas.
+
+            </td>
+
+        </tr>
+
     {% endfor %}
 
     </tbody>
@@ -258,13 +271,17 @@
 
 {% if user.profile.role == "dosen" %}
 
-<a
-    href="{% url 'tambah_tugas' course.id %}"
-    class="btn btn-success">
+<p style="margin-top:15px;">
 
-    Tambah Tugas
+    <a
+        href="{% url 'tambah_tugas' course.id %}"
+        class="btn btn-success">
 
-</a>
+        ➕ Tambah Tugas
+
+    </a>
+
+</p>
 
 {% endif %}
 
