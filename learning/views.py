@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .pandas_analysis import statistik_dashboard
 from django.shortcuts import render
 import markdown
+from django.utils import timezone
 
 from .models import (
     Profile,
@@ -551,9 +552,22 @@ def upload_jawaban(request, tugas_id):
     )
 
     tugas = get_object_or_404(
-        Tugas,
-        id=tugas_id
+    Tugas,
+    id=tugas_id
     )
+
+    if timezone.now() > tugas.deadline:
+
+        return render(
+            request,
+            "upload_jawaban.html",
+            {
+                "tugas": tugas,
+                "error": "Maaf, deadline pengumpulan tugas telah berakhir."
+            }
+        )
+
+    
 
     if request.method == "POST":
 
