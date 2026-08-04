@@ -41,44 +41,46 @@
             </td>
 
             <td>
-
-                <a href="{{ m.file.url }}" download>
-
-                    📄 {{ m.file.name|cut:"materi/" }}
-
-                </a>
-
+                {{ m.file.name|cut:"materi/" }}
             </td>
 
             <td>
+
+                {% if m.file %}
 
                 <a
                     href="{{ m.file.url }}"
                     download
                     class="btn btn-success btn-sm">
 
-                    ⬇ Download
+                    Download
 
                 </a>
 
+                {% else %}
+
+                <span>Tidak ada file</span>
+
+                {% endif %}
+
                 {% if user.profile.role == "dosen" %}
 
-                    <a
-                        href="{% url 'edit_materi' m.id %}"
-                        class="btn btn-warning btn-sm">
+                <a
+                    href="{% url 'edit_materi' m.id %}"
+                    class="btn btn-warning btn-sm">
 
-                        ✏ Edit
+                    Edit
 
-                    </a>
+                </a>
 
-                    <a
-                        href="{% url 'hapus_materi' m.id %}"
-                        class="btn btn-danger btn-sm"
-                        onclick="return confirm('Yakin ingin menghapus materi ini?')">
+                <a
+                    href="{% url 'hapus_materi' m.id %}"
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('Yakin ingin menghapus materi ini?')">
 
-                        🗑 Hapus
+                    Hapus
 
-                    </a>
+                </a>
 
                 {% endif %}
 
@@ -114,9 +116,11 @@
 
 <p style="margin-top:15px;">
 
-    <a href="{% url 'upload_materi' course.id %}" class="btn btn-success">
+    <a
+        href="{% url 'upload_materi' course.id %}"
+        class="btn btn-success">
 
-        ➕ Upload Materi
+        Upload Materi
 
     </a>
 
@@ -126,7 +130,7 @@
 
 <hr>
 
-<h3>📝 Tugas</h3>
+<h3>Tugas</h3>
 
 {% if tugas %}
 
@@ -202,42 +206,42 @@
 
                 {% if user.profile.role == "mahasiswa" %}
 
-                    <a
-                        href="{% url 'upload_jawaban' t.id %}"
-                        class="btn btn-primary btn-sm">
+                <a
+                    href="{% url 'upload_jawaban' t.id %}"
+                    class="btn btn-primary btn-sm">
 
-                        📤 Upload Jawaban
+                    Upload Jawaban
 
-                    </a>
+                </a>
 
                 {% endif %}
 
                 {% if user.profile.role == "dosen" %}
 
-                    <a
-                        href="{% url 'daftar_jawaban' course.id %}"
-                        class="btn btn-info btn-sm">
+                <a
+                    href="{% url 'daftar_jawaban' course.id %}"
+                    class="btn btn-info btn-sm">
 
-                        📄 Jawaban
+                    Jawaban
 
-                    </a>
+                </a>
 
-                    <a
-                        href="{% url 'edit_tugas' t.id %}"
-                        class="btn btn-warning btn-sm">
+                <a
+                    href="{% url 'edit_tugas' t.id %}"
+                    class="btn btn-warning btn-sm">
 
-                        ✏ Edit
+                    Edit
 
-                    </a>
+                </a>
 
-                    <a
-                        href="{% url 'hapus_tugas' t.id %}"
-                        class="btn btn-danger btn-sm"
-                        onclick="return confirm('Yakin ingin menghapus tugas ini?')">
+                <a
+                    href="{% url 'hapus_tugas' t.id %}"
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('Yakin ingin menghapus tugas ini?')">
 
-                        🗑 Hapus
+                    Hapus
 
-                    </a>
+                </a>
 
                 {% endif %}
 
@@ -277,7 +281,7 @@
         href="{% url 'tambah_tugas' course.id %}"
         class="btn btn-success">
 
-        ➕ Tambah Tugas
+        Tambah Tugas
 
     </a>
 
