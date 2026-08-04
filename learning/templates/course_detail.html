@@ -41,7 +41,7 @@
             </td>
 
             <td>
-                📄 {{ m.file.name|cut:"materi/" }}
+                {{ m.file.name|cut:"materi/" }}
             </td>
 
             <td>
@@ -53,7 +53,7 @@
                     download
                     class="btn btn-success btn-sm">
 
-                    ⬇ Download
+                    Download
 
                 </a>
 
@@ -69,7 +69,7 @@
                     href="{% url 'edit_materi' m.id %}"
                     class="btn btn-warning btn-sm">
 
-                    ✏ Edit
+                    Edit
 
                 </a>
 
@@ -78,7 +78,7 @@
                     class="btn btn-danger btn-sm"
                     onclick="return confirm('Yakin ingin menghapus materi ini?')">
 
-                    🗑 Hapus
+                    Hapus
 
                 </a>
 
@@ -120,7 +120,7 @@
         href="{% url 'upload_materi' course.id %}"
         class="btn btn-success">
 
-        ➕ Upload Materi
+        Upload Materi
 
     </a>
 
@@ -130,7 +130,7 @@
 
 <hr>
 
-<h3>📝 Tugas</h3>
+<h3>Tugas</h3>
 
 {% if tugas %}
 
@@ -210,7 +210,7 @@
                     href="{% url 'upload_jawaban' t.id %}"
                     class="btn btn-primary btn-sm">
 
-                    📤 Upload Jawaban
+                    Upload Jawaban
 
                 </a>
 
@@ -222,7 +222,7 @@
                     href="{% url 'daftar_jawaban' course.id %}"
                     class="btn btn-info btn-sm">
 
-                    📄 Jawaban
+                    Jawaban
 
                 </a>
 
@@ -230,7 +230,7 @@
                     href="{% url 'edit_tugas' t.id %}"
                     class="btn btn-warning btn-sm">
 
-                    ✏ Edit
+                    Edit
 
                 </a>
 
@@ -239,7 +239,7 @@
                     class="btn btn-danger btn-sm"
                     onclick="return confirm('Yakin ingin menghapus tugas ini?')">
 
-                    🗑 Hapus
+                    Hapus
 
                 </a>
 
@@ -281,7 +281,7 @@
         href="{% url 'tambah_tugas' course.id %}"
         class="btn btn-success">
 
-        ➕ Tambah Tugas
+        Tambah Tugas
 
     </a>
 
