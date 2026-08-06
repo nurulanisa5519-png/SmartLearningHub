@@ -36,6 +36,14 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
 
     # ======================
+    # AI ASSISTANT
+    # ======================
+
+    path('ai/', views.ai_chat, name='ai_chat'),
+    path('chat/new/', views.new_chat, name='new_chat'),
+    path('chat/<int:chat_id>/', views.ai_chat, name='chat_detail'),
+
+    # ======================
     # COURSE
     # ======================
 
@@ -115,10 +123,14 @@ urlpatterns = [
         name='beri_nilai'
     ),
 
+    # ======================
+    # LAPORAN
+    # ======================
+
     path(
-        "laporan/",
+        'laporan/',
         views.laporan_pandas,
-        name="laporan_pandas"
+        name='laporan_pandas'
     ),
 
     # ======================
@@ -126,5 +138,4 @@ urlpatterns = [
     # ======================
 
     path('api/', include(router.urls)),
-
 ]
