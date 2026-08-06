@@ -9,8 +9,7 @@ from .models import (
     Mahasiswa,
     MataKuliah,
     Course,
-    Chat,
-    ChatMessage,
+
 )
 
 # =========================
@@ -107,11 +106,3 @@ class CourseAdmin(admin.ModelAdmin):
         "kelas",
     )
 
-@admin.register(Chat)
-class ChatAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "user", "updated_at")
-
-
-@admin.register(ChatMessage)
-class ChatMessageAdmin(admin.ModelAdmin):
-    list_display = ("id", "chat", "role", "created_at")
