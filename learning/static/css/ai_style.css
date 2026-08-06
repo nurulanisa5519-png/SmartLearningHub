@@ -1,0 +1,532 @@
+/* ===========================
+   SMART LEARNING AI
+   GEMINI STYLE
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f8fafd;
+    color:#333;
+}
+
+/* Container */
+
+.gemini-container{
+    max-width:950px;
+    margin:0 auto;
+    padding:40px 20px;
+}
+
+/* Header */
+
+.header-ai{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.logo{
+    font-size:65px;
+    margin-bottom:10px;
+}
+
+.header-ai h1{
+    font-size:40px;
+    color:#1A73E8;
+    margin-bottom:8px;
+    font-weight:700;
+}
+
+.header-ai p{
+    color:#777;
+    font-size:16px;
+}
+
+/* Chat Area */
+
+.chat-box{
+    min-height:420px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+/* Welcome */
+
+.welcome{
+    text-align:center;
+    margin-top:80px;
+}
+
+.welcome h2{
+    color:#444;
+    margin-bottom:30px;
+}
+
+/* Suggestion */
+
+.suggestion{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.suggestion button{
+
+    background:white;
+    border:1px solid #E2E8F0;
+    padding:15px 22px;
+    border-radius:16px;
+    cursor:pointer;
+    transition:.3s;
+    font-size:15px;
+    color:#444;
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
+
+}
+
+.suggestion button:hover{
+
+    background:#E8F0FE;
+    transform:translateY(-3px);
+
+}
+
+/* Bubble */
+
+.message{
+
+    display:flex;
+    margin:12px 0;
+
+}
+
+.message.user{
+
+    justify-content:flex-end;
+
+}
+
+.message.ai{
+
+    justify-content:flex-start;
+
+}
+
+.bubble{
+
+    max-width:75%;
+    padding:16px 18px;
+    border-radius:18px;
+    line-height:1.8;
+    font-size:15px;
+    word-break:break-word;
+
+}
+
+.user .bubble{
+
+    background:#E8F0FE;
+    color:#222;
+    border-bottom-right-radius:5px;
+
+}
+
+.ai .bubble{
+
+    background:white;
+    border:1px solid #E5E7EB;
+    box-shadow:0 5px 12px rgba(0,0,0,.05);
+    border-bottom-left-radius:5px;
+
+}
+
+/* Avatar */
+
+.avatar{
+
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#1A73E8;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:12px;
+    font-size:18px;
+    flex-shrink:0;
+
+}
+
+/* Form */
+
+#chat-form{
+
+    margin-top:35px;
+    display:flex;
+    align-items:flex-end;
+    gap:12px;
+
+}
+
+textarea{
+
+    flex:1;
+    resize:none;
+    min-height:58px;
+    max-height:180px;
+
+    border:none;
+    outline:none;
+
+    border-radius:30px;
+    padding:18px 22px;
+
+    font-size:15px;
+
+    background:white;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+textarea::placeholder{
+
+    color:#999;
+
+}
+
+/* Send Button */
+
+#chat-form button{
+
+    width:58px;
+    height:58px;
+
+    border:none;
+    border-radius:50%;
+
+    background:#1A73E8;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:22px;
+
+    transition:.3s;
+
+    box-shadow:0 5px 12px rgba(26,115,232,.35);
+
+}
+
+#chat-form button:hover{
+
+    transform:scale(1.08);
+
+}
+
+/* Thinking */
+
+.typing{
+
+    display:flex;
+    gap:6px;
+    margin-top:10px;
+
+}
+
+.typing span{
+
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#1A73E8;
+    animation:blink 1s infinite;
+
+}
+
+.typing span:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.typing span:nth-child(3){
+
+    animation-delay:.4s;
+
+}
+
+@keyframes blink{
+
+    0%{
+        opacity:.2;
+    }
+
+    50%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:.2;
+    }
+
+}
+
+/* Scroll */
+
+.chat-box{
+
+    overflow-y:auto;
+    padding-right:5px;
+
+}
+
+.chat-box::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.chat-box::-webkit-scrollbar-thumb{
+
+    background:#D6D6D6;
+    border-radius:20px;
+
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.header-ai h1{
+
+    font-size:30px;
+
+}
+
+.bubble{
+
+    max-width:90%;
+
+}
+
+.suggestion{
+
+    flex-direction:column;
+
+}
+
+.suggestion button{
+
+    width:100%;
+
+}
+
+}
+
+/* ==========================
+   Layout
+========================== */
+
+.ai-layout{
+
+    display:flex;
+    height:calc(100vh - 90px);
+
+}
+
+/* Sidebar */
+
+.sidebar{
+
+    width:280px;
+    background:white;
+    border-right:1px solid #e5e7eb;
+    padding:20px;
+    overflow-y:auto;
+
+}
+
+.sidebar h3{
+
+    color:#1A73E8;
+    margin-bottom:20px;
+
+}
+
+.new-chat{
+
+    display:block;
+    background:#1A73E8;
+    color:white;
+    text-align:center;
+    padding:12px;
+    border-radius:10px;
+    text-decoration:none;
+    margin-bottom:20px;
+    transition:.3s;
+
+}
+
+.new-chat:hover{
+
+    background:#1669d8;
+
+}
+
+.history h4{
+
+    color:#666;
+    margin-bottom:10px;
+
+}
+
+.history-item{
+
+    display:block;
+    padding:12px;
+    margin-bottom:8px;
+    border-radius:10px;
+    color:#444;
+    text-decoration:none;
+    transition:.3s;
+
+}
+
+.history-item:hover{
+
+    background:#E8F0FE;
+
+}
+
+.history-item.active{
+
+    background:#1A73E8;
+    color:white;
+
+}
+
+/* Isi chat */
+
+.chat-content{
+
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    padding:25px;
+
+}
+
+/* ===========================================
+   Tombol Dashboard
+=========================================== */
+
+.dashboard-btn{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    width:100%;
+
+    padding:14px 18px;
+
+    margin:15px 0 12px;
+
+    border-radius:14px;
+
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:0.3s;
+
+    box-shadow:0 6px 15px rgba(0,0,0,.15);
+
+}
+
+.dashboard-btn:hover{
+
+    color:#fff;
+
+    background:linear-gradient(135deg,#16a34a,#15803d);
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 22px rgba(0,0,0,.22);
+
+}
+
+.dashboard-btn:active{
+
+    transform:scale(.97);
+
+}
+
+.dashboard-btn .icon{
+
+    font-size:18px;
+
+}
+
+/* ===========================================
+   Tombol Chat Baru
+=========================================== */
+
+.new-chat{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+
+    padding:14px 18px;
+
+    margin-bottom:20px;
+
+    border-radius:14px;
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:0.3s;
+
+    box-shadow:0 6px 15px rgba(0,0,0,.15);
+
+}
+
+.new-chat:hover{
+
+    color:#fff;
+
+    background:linear-gradient(135deg,#1d4ed8,#2563eb);
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 22px rgba(0,0,0,.22);
+
+}
