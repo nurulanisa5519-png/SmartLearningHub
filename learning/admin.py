@@ -10,6 +10,8 @@ from .models import (
     Materi,
     Tugas,
     PengumpulanTugas,
+    Chat, 
+    ChatMessage,
 )
 
 
@@ -83,3 +85,12 @@ class PengumpulanTugasAdmin(admin.ModelAdmin):
         "nilai",
         "tanggal_kumpul",
     )
+
+@admin.register(Chat)
+class ChatAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "user", "updated_at")
+
+
+@admin.register(ChatMessage)
+class ChatMessageAdmin(admin.ModelAdmin):
+    list_display = ("id", "chat", "role", "created_at")
