@@ -18,8 +18,10 @@ load_dotenv(BASE_DIR / ".env")
 # OpenAI API Key
 load_dotenv()
 
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+import os
 
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 # SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY = os.getenv(
