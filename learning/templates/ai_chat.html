@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 Smart Learning AI
@@ -6,186 +7,170 @@ Smart Learning AI
 
 {% block content %}
 
-<style>
+<link rel="stylesheet" href="{% static 'css/ai_style.css' %}">
 
-.ai-card{
-    max-width:900px;
-    margin:20px auto;
-    background:#fff;
-    border-radius:12px;
-    box-shadow:0 4px 15px rgba(0,0,0,.1);
-    overflow:hidden;
-}
+<div class="ai-layout">
 
-.ai-header{
-    background:#2563eb;
-    color:#fff;
-    padding:15px 20px;
-    font-size:24px;
-    font-weight:bold;
-}
+    <!-- ================= Sidebar ================= -->
+    <aside class="sidebar">
 
-.ai-body{
-    padding:20px;
-}
+    <h3>✨ Smart Learning AI</h3>
 
-.chat-box{
-    height:420px;
-    overflow-y:auto;
-    background:#f8f9fa;
-    border:1px solid #ddd;
-    border-radius:10px;
-    padding:20px;
-}
+    <!-- Tombol Kembali -->
+            <!-- Tombol Dashboard -->
+        <a href="{% url 'dashboard' %}" class="dashboard-btn">
+            <span class="icon">🏠</span>
+            <span>Kembali ke Dashboard</span>
+        </a>
 
-/* Bubble Mahasiswa */
+        <!-- Tombol Chat Baru -->
+        <a href="{% url 'new_chat' %}" class="new-chat">
+            ➕ Chat Baru
+        </a>
 
-.user-chat{
-    display:flex;
-    justify-content:flex-end;
-    margin-bottom:20px;
-}
+        <div class="history">
 
-.user-chat div{
-    background:#2563eb;
-    color:white;
-    padding:12px 18px;
-    border-radius:15px 15px 0 15px;
-    max-width:70%;
-    word-wrap:break-word;
-}
+            <h4>Riwayat Chat</h4>
 
-/* Bubble AI */
+            {% for c in chats %}
 
-.ai-chat{
-    display:flex;
-    justify-content:flex-start;
-    margin-bottom:20px;
-}
+                <a href="{% url 'chat_detail' c.id %}"
+                   class="history-item {% if chat.id == c.id %}active{% endif %}">
 
-.ai-chat .bubble{
-    background:white;
-    border:1px solid #ddd;
-    border-radius:15px 15px 15px 0;
-    padding:18px;
-    max-width:85%;
-    line-height:1.8;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
-}
+                    💬 {{ c.title }}
 
-/* Tampilan HTML dari AI */
+                </a>
 
-.ai-chat .bubble p{
-    margin-bottom:12px;
-}
+            {% empty %}
 
-.ai-chat .bubble h1,
-.ai-chat .bubble h2,
-.ai-chat .bubble h3{
-    margin-top:10px;
-    margin-bottom:10px;
-    color:#2563eb;
-}
+                <p class="empty-chat">
+                    Belum ada riwayat chat.
+                </p>
 
-.ai-chat .bubble ul,
-.ai-chat .bubble ol{
-    margin-left:20px;
-    margin-bottom:12px;
-}
-
-.ai-chat .bubble code{
-    background:#f1f1f1;
-    padding:2px 6px;
-    border-radius:4px;
-}
-
-.ai-chat .bubble pre{
-    background:#272822;
-    color:white;
-    padding:15px;
-    border-radius:8px;
-    overflow-x:auto;
-}
-
-textarea{
-    width:100%;
-    height:80px;
-    resize:none;
-    border-radius:10px;
-    border:1px solid #ccc;
-    padding:12px;
-    font-size:15px;
-    margin-top:20px;
-}
-
-.btn-ai{
-    margin-top:15px;
-    background:#16a34a;
-    color:white;
-    border:none;
-    padding:10px 25px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.btn-ai:hover{
-    background:#15803d;
-}
-
-</style>
-
-<div class="ai-card">
-
-    <div class="ai-header">
-        🤖 Smart Learning AI
-    </div>
-
-    <div class="ai-body">
-
-        <div class="chat-box">
-
-            {% if pertanyaan %}
-
-            <div class="user-chat">
-                <div>
-                    {{ pertanyaan }}
-                </div>
-            </div>
-
-            {% endif %}
-
-            {% if jawaban %}
-
-            <div class="ai-chat">
-
-                <div class="bubble">
-
-                    {{ jawaban|safe }}
-
-                </div>
-
-            </div>
-
-            {% endif %}
+            {% endfor %}
 
         </div>
 
-        <form method="POST">
+    </aside>
+
+    <!-- ================= Isi Chat ================= -->
+    <main class="chat-content">
+
+        {% if messages %}
+
+            <div class="chat-box" id="chat-box">
+
+                {% for msg in messages %}
+
+                    {% if msg.role == "user" %}
+
+                        <div class="message user">
+
+                            <div class="bubble">
+                                {{ msg.message|linebreaksbr }}
+                            </div>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="message ai">
+
+                            <div class="avatar">
+                                ✨
+                            </div>
+
+                            <div class="bubble">
+                                {{ msg.message|linebreaksbr }}
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="welcome">
+
+                <div class="logo">✨</div>
+
+                <h1>Smart Learning AI</h1>
+
+                <p>Belajar lebih mudah dengan bantuan Artificial Intelligence.</p>
+
+                <h2>Apa yang ingin Anda pelajari hari ini?</h2>
+
+                <div class="suggestion">
+
+                    <button type="button"
+                        onclick="isiPrompt('Jelaskan bahasa Python')">
+                        📘 Python
+                    </button>
+
+                    <button type="button"
+                        onclick="isiPrompt('Ringkas materi Basis Data')">
+                        📚 Basis Data
+                    </button>
+
+                    <button type="button"
+                        onclick="isiPrompt('Buat Program HTML')">
+                        💻 HTML
+                    </button>
+
+                    <button type="button"
+                        onclick="isiPrompt('Jelaskan Algoritma')">
+                        🧠 Algoritma
+                    </button>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+        <!-- ================= Form ================= -->
+
+        <form method="POST" id="chat-form">
 
             {% csrf_token %}
 
             <textarea
+                id="prompt"
                 name="pertanyaan"
-                placeholder="Tanyakan materi perkuliahan...">{{ pertanyaan }}</textarea>
+                rows="1"
+                placeholder="Tanyakan apa saja..."
+                required></textarea>
 
-            <button type="submit" class="btn-ai">
-                🚀 Kirim Pertanyaan
+            <button type="submit">
+                ➤
             </button>
 
         </form>
 
-    </div>
+    </main>
 
 </div>
+
+<script>
+
+function isiPrompt(text){
+    document.getElementById("prompt").value = text;
+}
+
+window.onload = function(){
+
+    const chat = document.getElementById("chat-box");
+
+    if(chat){
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+};
+
+</script>
 
 {% endblock %}
