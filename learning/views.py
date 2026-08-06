@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from .pandas_analysis import statistik_dashboard
 from django.shortcuts import render
 import markdown
 from django.utils import timezone
+from .models import Chat, ChatMessage
 
 from .models import (
     Profile,
@@ -26,12 +25,11 @@ from .serializers import (
     TugasSerializer,
 )
 
-from openai import OpenAI
+from google import genai
 from django.conf import settings
 
-client = OpenAI(
-    api_key=settings.OPENROUTER_API_KEY,
-    base_url="https://openrouter.ai/api/v1"
+client = genai.Client(
+    api_key=settings.GEMINI_API_KEY
 )
 # =====================================
 # HOME
@@ -139,63 +137,197 @@ def dashboard(request):
             kelas=mahasiswa.kelas
         )
 
-        pertanyaan = ""
-        jawaban = ""
-
-        if request.method == "POST":
-
-            pertanyaan = request.POST.get("pertanyaan")
-
-            if pertanyaan:
-
-                try:
-
-                    response = client.chat.completions.create(
-                        model="deepseek/deepseek-r1-0528:free",
-                        messages=[
-                            {
-                                "role": "system",
-                                "content": "Kamu adalah Smart Learning AI yang membantu mahasiswa belajar. Jawablah dalam bahasa Indonesia dengan jelas dan mudah dipahami."
-                            },
-                            {
-                                "role": "user",
-                                "content": pertanyaan
-                            }
-                        ]
-                    )
-
-                    print(response)
-
-                    isi = response.choices[0].message.content
-
-                    print("ISI JAWABAN =", isi)
-
-                    jawaban = markdown.markdown(
-                        isi,
-                        extensions=["extra"]
-                    )
-
-                except Exception as e:
-                    import traceback
-
-                    traceback.print_exc()
-
-                    print("ERROR =", str(e))
-
-                    jawaban = f"Terjadi kesalahan: {str(e)}"
-
         return render(
             request,
             "student_dashboard.html",
             {
                 "mahasiswa": mahasiswa,
                 "courses": courses,
-                "pertanyaan": pertanyaan,
-                "jawaban": jawaban,
             }
         )
 
     return redirect("login")
+
+@login_required
+def ai_chat(request, chat_id=None):
+
+    # Semua chat milik user
+    chats = Chat.objects.filter(
+        user=request.user
+    ).order_by("-updated_at")
+
+    # ===============================
+    # Pilih chat
+    # ===============================
+
+    if chat_id:
+
+        chat = get_object_or_404(
+            Chat,
+            id=chat_id,
+            user=request.user
+        )
+
+    else:
+
+        if chats.exists():
+
+            chat = chats.first()
+
+        else:
+
+            chat = Chat.objects.create(
+                user=request.user,
+                title="Chat Baru"
+            )
+
+    # ===============================
+    # Kirim Pesan
+    # ===============================
+
+    if request.method == "POST":
+
+        pertanyaan = request.POST.get("pertanyaan")
+
+        if pertanyaan:
+
+            # Simpan pesan user
+            ChatMessage.objects.create(
+                chat=chat,
+                role="user",
+                message=pertanyaan
+            )
+
+            # -------------------------------
+            # Ambil seluruh riwayat chat
+            # -------------------------------
+
+            riwayat = ChatMessage.objects.filter(
+                chat=chat
+            ).order_by("created_at")
+
+            contents = []
+
+            # System Prompt
+            contents.append({
+                "role": "user",
+                "parts": [{
+                    "text":
+                    """
+Kamu adalah Smart Learning AI.
+
+Jawablah dalam Bahasa Indonesia.
+
+Berikan jawaban yang jelas,
+mudah dipahami mahasiswa.
+
+Jika diminta membuat kode,
+gunakan format code block.
+
+Jika pengguna bertanya lanjutan,
+ingat percakapan sebelumnya.
+                    """
+                }]
+            })
+
+            # Riwayat Percakapan
+
+            for pesan in riwayat:
+
+                if pesan.role == "user":
+
+                    contents.append({
+                        "role": "user",
+                        "parts": [
+                            {
+                                "text": pesan.message
+                            }
+                        ]
+                    })
+
+                else:
+
+                    contents.append({
+                        "role": "model",
+                        "parts": [
+                            {
+                                "text": pesan.message
+                            }
+                        ]
+                    })
+
+            # -----------------------------
+            # Kirim ke Gemini
+            # -----------------------------
+
+            try:
+
+                response = client.models.generate_content(
+
+                    model="gemini-3.5-flash",
+
+                    contents=contents
+
+                )
+
+                jawaban = response.text
+
+            except Exception as e:
+
+                jawaban = f"Terjadi kesalahan : {e}"
+
+            # -----------------------------
+            # Simpan jawaban AI
+            # -----------------------------
+
+            ChatMessage.objects.create(
+
+                chat=chat,
+
+                role="assistant",
+
+                message=jawaban
+
+            )
+
+            # -----------------------------
+            # Update Judul Chat
+            # -----------------------------
+
+            if chat.title == "Chat Baru":
+
+                if len(pertanyaan) > 35:
+
+                    chat.title = pertanyaan[:35] + "..."
+
+                else:
+
+                    chat.title = pertanyaan
+
+            chat.save()
+
+            return redirect(
+                "chat_detail",
+                chat.id
+            )
+
+    # ===============================
+    # Ambil pesan
+    # ===============================
+
+    messages = ChatMessage.objects.filter(
+        chat=chat
+    ).order_by("created_at")
+
+    return render(
+        request,
+        "ai_chat.html",
+        {
+            "chat": chat,
+            "messages": messages,
+            "chats": chats,
+        }
+    )
 
 import pandas as pd
 
@@ -826,6 +958,22 @@ def logout_view(request):
     logout(request)
 
     return redirect("login")
+
+@login_required
+def new_chat(request):
+
+    chat = Chat.objects.create(
+
+        user=request.user,
+
+        title="Chat Baru"
+
+    )
+
+    return redirect(
+        "chat_detail",
+        chat.id
+    )
 
 class MahasiswaViewSet(viewsets.ModelViewSet):
     queryset = Mahasiswa.objects.all()
