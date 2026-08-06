@@ -48,9 +48,7 @@ class Kelas(models.Model):
 class Dosen(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     nip = models.CharField(max_length=30)
-
     nama = models.CharField(max_length=100)
 
     def __str__(self):
@@ -63,11 +61,8 @@ class Dosen(models.Model):
 class Mahasiswa(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     nim = models.CharField(max_length=30)
-
     nama = models.CharField(max_length=100)
-
     kelas = models.ForeignKey(Kelas, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -80,9 +75,7 @@ class Mahasiswa(models.Model):
 class MataKuliah(models.Model):
 
     kode = models.CharField(max_length=20)
-
     nama = models.CharField(max_length=100)
-
     sks = models.IntegerField()
 
     def __str__(self):
@@ -95,11 +88,8 @@ class MataKuliah(models.Model):
 class Course(models.Model):
 
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-
     kelas = models.ForeignKey(Kelas, on_delete=models.CASCADE)
-
     mata_kuliah = models.ForeignKey(MataKuliah, on_delete=models.CASCADE)
-
     dosen = models.ForeignKey(Dosen, on_delete=models.CASCADE)
 
     class Meta:
@@ -115,13 +105,9 @@ class Course(models.Model):
 class Materi(models.Model):
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-
     judul = models.CharField(max_length=200)
-
     deskripsi = models.TextField()
-
     file = models.FileField(upload_to='materi/')
-
     tanggal_upload = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -134,13 +120,9 @@ class Materi(models.Model):
 class Tugas(models.Model):
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-
     judul = models.CharField(max_length=200)
-
     deskripsi = models.TextField()
-
     file_tugas = models.FileField(upload_to='tugas/', blank=True, null=True)
-
     deadline = models.DateTimeField()
 
     def __str__(self):
@@ -153,14 +135,73 @@ class Tugas(models.Model):
 class PengumpulanTugas(models.Model):
 
     tugas = models.ForeignKey(Tugas, on_delete=models.CASCADE)
-
     mahasiswa = models.ForeignKey(Mahasiswa, on_delete=models.CASCADE)
-
     file_jawaban = models.FileField(upload_to='jawaban/')
-
     tanggal_kumpul = models.DateTimeField(auto_now_add=True)
-
     nilai = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.mahasiswa.nama} - {self.tugas.judul}"
+
+
+# =====================================================
+# AI CHAT
+# =====================================================
+
+class Chat(models.Model):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="chats"
+    )
+
+    title = models.CharField(
+        max_length=200,
+        default="Chat Baru"
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+        ordering = ["-updated_at"]
+
+    def __str__(self):
+        return self.title
+
+
+class ChatMessage(models.Model):
+
+    ROLE_CHOICES = (
+        ("user", "User"),
+        ("assistant", "Assistant"),
+    )
+
+    chat = models.ForeignKey(
+        Chat,
+        on_delete=models.CASCADE,
+        related_name="messages"
+    )
+
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES
+    )
+
+    message = models.TextField()
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self):
+        return f"{self.chat.title} - {self.role}"
