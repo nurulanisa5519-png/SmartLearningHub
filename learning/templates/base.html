@@ -13,6 +13,26 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+    <!-- Perbaikan Footer -->
+    <style>
+
+        html,
+        body{
+            height:100%;
+        }
+
+        body{
+            display:flex;
+            flex-direction:column;
+            min-height:100vh;
+        }
+
+        .main-content{
+            flex:1;
+        }
+
+    </style>
+
 </head>
 
 <body class="bg-light">
@@ -45,19 +65,20 @@
     </nav>
 
     <!-- Content -->
-    <div class="container mt-4">
+    <main class="container mt-4 main-content">
 
         {% block content %}
         {% endblock %}
 
-    </div>
+    </main>
 
     <!-- Footer -->
-    <footer class="text-center mt-5 mb-3 text-muted">
-        <hr>
-        <p>
+    <footer class="text-center mt-5 py-3 text-muted border-top">
+
+        <p class="mb-0">
             © 2026 Smart Learning Hub | Program Studi Informatika
         </p>
+
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
