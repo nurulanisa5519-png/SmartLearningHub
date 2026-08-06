@@ -530,3 +530,235 @@ textarea::placeholder{
     box-shadow:0 10px 22px rgba(0,0,0,.22);
 
 }
+
+/* =========================================
+   RESPONSIVE TABLET
+========================================= */
+
+@media screen and (max-width:992px){
+
+    .ai-layout{
+
+        flex-direction:column;
+        min-height:auto;
+
+    }
+
+    .sidebar{
+
+        width:100%;
+        border-right:none;
+        border-bottom:1px solid #ddd;
+        padding:18px;
+
+    }
+
+    .chat-content{
+
+        width:100%;
+        padding:20px;
+
+    }
+
+    .chat-box{
+
+        min-height:350px;
+
+    }
+
+}
+
+/* =========================================
+   RESPONSIVE MOBILE
+========================================= */
+
+@media screen and (max-width:768px){
+
+    .sidebar{
+
+        width:100%;
+        padding:15px;
+
+    }
+
+    .sidebar h3{
+
+        text-align:center;
+        font-size:22px;
+
+    }
+
+    .dashboard-btn,
+    .new-chat{
+
+        width:100%;
+        font-size:14px;
+        padding:12px;
+
+    }
+
+    .history-item{
+
+        font-size:14px;
+        padding:10px;
+
+    }
+
+    .chat-content{
+
+        padding:15px;
+
+    }
+
+    .header-ai{
+
+        margin-bottom:25px;
+
+    }
+
+    .header-ai h1{
+
+        font-size:28px;
+
+    }
+
+    .header-ai p{
+
+        font-size:14px;
+
+    }
+
+    .logo{
+
+        font-size:50px;
+
+    }
+
+    .welcome{
+
+        margin-top:30px;
+
+    }
+
+    .welcome h2{
+
+        font-size:22px;
+
+    }
+
+    .suggestion{
+
+        flex-direction:column;
+        gap:10px;
+
+    }
+
+    .suggestion button{
+
+        width:100%;
+
+    }
+
+    .message{
+
+        width:100%;
+
+    }
+
+    .bubble{
+
+        max-width:100%;
+        font-size:14px;
+        line-height:1.7;
+
+    }
+
+    .avatar{
+
+        width:38px;
+        height:38px;
+        font-size:16px;
+
+    }
+
+    #chat-form{
+
+        gap:10px;
+
+    }
+
+    textarea{
+
+        font-size:14px;
+        padding:14px 18px;
+        min-height:55px;
+
+    }
+
+    #chat-form button{
+
+        width:52px;
+        height:52px;
+        font-size:20px;
+
+    }
+
+}
+
+/* =========================================
+   RESPONSIVE HP KECIL
+========================================= */
+
+@media screen and (max-width:480px){
+
+    .sidebar{
+
+        padding:12px;
+
+    }
+
+    .sidebar h3{
+
+        font-size:19px;
+
+    }
+
+    .logo{
+
+        font-size:42px;
+
+    }
+
+    .header-ai h1{
+
+        font-size:22px;
+
+    }
+
+    .welcome h2{
+
+        font-size:18px;
+
+    }
+
+    .bubble{
+
+        font-size:13px;
+
+    }
+
+    textarea{
+
+        font-size:13px;
+
+    }
+
+    #chat-form button{
+
+        width:48px;
+        height:48px;
+        font-size:18px;
+
+    }
+
+}
