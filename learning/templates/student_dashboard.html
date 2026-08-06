@@ -6,6 +6,82 @@ Dashboard Mahasiswa
 
 {% block content %}
 
+<style>
+
+/* ===============================
+   Floating Smart Learning AI
+================================ */
+
+.ai-floating-btn{
+
+    position:fixed;
+
+    bottom:25px;
+
+    right:25px;
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#2563EB,#3B82F6);
+
+    color:white;
+
+    text-decoration:none;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:34px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+
+    transition:.3s;
+
+    z-index:9999;
+
+}
+
+.ai-floating-btn:hover{
+
+    transform:scale(1.1);
+
+    color:white;
+
+    box-shadow:0 12px 30px rgba(37,99,235,.45);
+
+}
+
+@keyframes floating{
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+
+}
+
+.ai-floating-btn{
+
+    animation:floating 2.5s ease-in-out infinite;
+
+}
+
+</style>
+
 <h2>Dashboard Mahasiswa</h2>
 
 <p>
@@ -48,9 +124,8 @@ Dashboard Mahasiswa
 
                 </p>
 
-                <a
-                    href="{% url 'detail_course' course.id %}"
-                    class="btn btn-primary w-100">
+                <a href="{% url 'detail_course' course.id %}"
+                   class="btn btn-primary w-100">
 
                     Masuk Course
 
@@ -76,123 +151,17 @@ Dashboard Mahasiswa
 
 {% endif %}
 
-<hr>
 
-<!-- ================= AI ASSISTANT ================= -->
+<!-- =====================================
+        Floating Smart Learning AI
+====================================== -->
 
-<div class="card shadow-lg">
+<a href="{% url 'ai_chat' %}"
+   class="ai-floating-btn"
+   title="Smart Learning AI">
 
-    <div class="card-header bg-primary text-white">
+    🤖
 
-        <h4>🤖 Smart Learning AI</h4>
-
-    </div>
-
-    <div class="card-body">
-
-        <!-- Area Chat -->
-
-        <div
-            style="
-                height:350px;
-                overflow-y:auto;
-                background:#f8f9fa;
-                border:1px solid #ddd;
-                border-radius:10px;
-                padding:20px;
-                margin-bottom:20px;
-            ">
-
-            {% if pertanyaan %}
-
-            <div style="text-align:right; margin-bottom:20px;">
-
-                <span
-                    style="
-                        background:#0d6efd;
-                        color:white;
-                        padding:10px 15px;
-                        border-radius:15px;
-                        display:inline-block;
-                    ">
-
-                    {{ pertanyaan }}
-
-                </span>
-
-            </div>
-
-            {% endif %}
-
-            {% if jawaban %}
-
-            <div style="margin-bottom:20px;">
-
-                <span
-                    style="
-                        background:#e9ecef;
-                        color:black;
-                        padding:10px 15px;
-                        border-radius:15px;
-                        display:inline-block;
-                    ">
-
-                    {{ jawaban }}
-
-                </span>
-
-            </div>
-
-            {% else %}
-
-            <p style="color:gray;">
-
-                👋 Halo {{ mahasiswa.nama }}.
-
-                <br><br>
-
-                Saya adalah <strong>Smart Learning AI</strong>.
-
-                Silakan bertanya mengenai materi perkuliahan,
-                tugas, ataupun konsep pemrograman.
-
-            </p>
-
-            {% endif %}
-
-        </div>
-
-        <!-- Form Chat -->
-
-        <form method="POST">
-
-            {% csrf_token %}
-
-            <div class="input-group">
-
-                <textarea
-                    class="form-control"
-                    name="pertanyaan"
-                    rows="3"
-                    placeholder="Contoh: Jelaskan apa itu Django Framework..."
-                    required>{{ pertanyaan }}</textarea>
-
-            </div>
-
-            <br>
-
-            <button
-                type="submit"
-                class="btn btn-success">
-
-                🤖 Kirim Pertanyaan
-
-            </button>
-
-        </form>
-
-    </div>
-
-</div>
+</a>
 
 {% endblock %}
