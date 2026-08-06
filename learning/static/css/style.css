@@ -478,3 +478,131 @@ body{
     }
 
 }
+
+/* ==========================================
+      SMART LEARNING AI FLOATING BUTTON
+========================================== */
+
+.ai-wrapper{
+
+    position:fixed;
+
+    bottom:30px;
+
+    right:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    z-index:9999;
+
+}
+
+/* Label */
+
+.ai-label{
+
+    background:white;
+
+    color:#333;
+
+    padding:10px 16px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.15);
+
+    opacity:0;
+
+    transform:translateX(15px);
+
+    transition:.3s;
+
+}
+
+/* Tombol Robot */
+
+.ai-float{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#1A73E8,#4285F4);
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:34px;
+
+    text-decoration:none;
+
+    box-shadow:0 10px 30px rgba(26,115,232,.35);
+
+    transition:.3s;
+
+}
+
+/* Hover */
+
+.ai-wrapper:hover .ai-label{
+
+    opacity:1;
+
+    transform:translateX(0);
+
+}
+
+.ai-float:hover{
+
+    transform:scale(1.12);
+
+    color:white;
+
+    box-shadow:0 14px 35px rgba(26,115,232,.45);
+
+}
+
+/* Animasi */
+
+@keyframes floatAI{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.ai-float{
+
+    animation:floatAI 2.5s ease-in-out infinite;
+
+}
